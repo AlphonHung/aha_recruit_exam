@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import Box from '@mui/material/Box';
 import theme from './styles/theme';
 import MainRoute from './routers/MainRoute';
 
@@ -9,11 +10,11 @@ import MainRoute from './routers/MainRoute';
 const App = () => (
     <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div style={{ position: 'relative', flex: 1, background: theme.custom.backgroundLinear, overflowY: 'scroll' }}>
+        <Box height={1} sx={{ position: 'relative', background: theme.custom.backgroundLinear, overflowY: 'scroll' }}>
             <BrowserRouter>
                 <MainRoute />
             </BrowserRouter>
-        </div>
+        </Box>
     </ThemeProvider>
 )
 
