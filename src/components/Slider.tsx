@@ -31,7 +31,6 @@ const sliderMarks = [
 const sliderStyle = {
     color: '#FFD05D',
     height: 8,
-    padding: '4px 0',
     '& .MuiSlider-rail': {
         backgroundColor: '#FFFFFF',
         opacity: 0.3
