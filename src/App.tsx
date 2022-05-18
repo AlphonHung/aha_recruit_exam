@@ -10,7 +10,7 @@ import MainRoute from './routers/MainRoute';
 const App = () => (
     <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box height={1} sx={{ position: 'relative', background: theme.custom.backgroundLinear, overflowY: 'scroll' }}>
+        <Box height={1} sx={{ position: 'relative', overflowY: 'scroll' }}>
             <BrowserRouter>
                 <MainRoute />
             </BrowserRouter>

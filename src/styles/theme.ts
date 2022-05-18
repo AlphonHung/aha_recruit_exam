@@ -22,21 +22,37 @@ declare module '@mui/material/styles' {
 
 // 產生器 https://bareynol.github.io/mui-theme-creator/
 const theme = createTheme({
+    spacing: 10,
     palette: {
         primary: {
             main: 'rgb(222, 192, 154)',
         },
-        secondary: {
-            main: '#ff0057',
-        },
         text: {
             primary: '#ffffff',
+        },
+        background: {
+            default: '#181818',
         },
         contrastThreshold: 3,
         tonalOffset: 0.2,
     },
     shape: {
         borderRadius: 0
+    },
+    typography: {
+        fontFamily: [
+            'Ubuntu',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
     },
     custom: {
         backgroundLinear: 'linear-gradient(to right bottom, rgb(49, 51, 61), rgb(5, 5, 8))',

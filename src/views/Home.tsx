@@ -1,55 +1,44 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
+import { PageSizeSlider } from '../components/PageSizeSlider';
 
-const sliderMarks = [
-    {
-        value: 0,
-        label: '0°C',
-    },
-    {
-        value: 20,
-        label: '20°C',
-    },
-    {
-        value: 37,
-        label: '37°C',
-    },
-    {
-        value: 100,
-        label: '100°C',
-    },
-];
+export const Home = () => {
+    const [pageSize, setPageSize] = useState(10);
 
-export const Home = () => (
-    <Box height={1}>
-        <Stack height={1} flex={1} spacing={2}>
-            <Typography variant="h4" component="h4">Search</Typography>
-            <TextField
-                hiddenLabel
-                placeholder="Placeholder"
-            />
-            <Divider />
-            <Typography variant="h4" component="h4"># Of Results Per Page</Typography>
-            <Typography variant="body2" component="div">
-                <span style={{ fontSize: 30 }}>30</span>
-                results
-            </Typography>
-            <Slider
-                defaultValue={20}
-                step={null}
-                valueLabelDisplay="auto"
-                marks={sliderMarks}
-            />
-            <Divider />
-            <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"}>
-                <Button variant="contained">SEARCH</Button>
+    const handleChange = useCallback((event: Event, newValue: number | number[], activeThumb: number) => {
+        if (typeof newValue === 'number') {
+            setPageSize(newValue);
+        }
+    }, [])
+
+    return (
+        <Container maxWidth={'lg'}>
+            <Box height={1}>
+                <Stack height={1} flex={1} spacing={2}>
+                    <Typography variant="h4" component="h4">Search</Typography>
+                    <TextField
+                        hiddenLabel
+                        placeholder="Placeholder"
+                    />
+                    <Divider />
+                    <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5}># Of Results Per Page</Typography>
+                    <Typography variant="body1" component="p" fontSize={'0.8rem'}>
+                        <span style={{ fontSize: 48, fontWeight: 700, marginRight: 10, lineHeight: 0.875 }}>{pageSize}</span>
+                        results
+                    </Typography>
+                    <PageSizeSlider defaultValue={pageSize} handleChange={handleChange} />
+                    <Divider />
+                    <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"}>
+                        <Button variant="contained">SEARCH</Button>
+                    </Box>
+                </Stack>
             </Box>
-        </Stack>
-    </Box>
-)
+        </Container>
+    )
+}
