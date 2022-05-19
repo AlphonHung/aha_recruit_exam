@@ -6,26 +6,27 @@ declare module '@mui/material/styles' {
     interface Theme {
         custom: {
             backgroundLinear: string;
-            primaryLinear: string;
-            buttonGrayLinear: string;
+            highlightLinear: string;
         };
     }
     // 定義建立時的介面
     interface ThemeOptions {
         custom?: {
             backgroundLinear?: string;
-            primaryLinear?: string;
-            buttonGrayLinear?: string;
+            highlightLinear?: string;
         };
     }
 }
 
 // 產生器 https://bareynol.github.io/mui-theme-creator/
-const theme = createTheme({
+export const theme = createTheme({
     spacing: 10,
     palette: {
         primary: {
             main: '#FFFFFF',
+        },
+        secondary: {
+            main: '#00D1FF'
         },
         text: {
             primary: '#FFFFFF',
@@ -56,9 +57,6 @@ const theme = createTheme({
     },
     custom: {
         backgroundLinear: 'linear-gradient(to right bottom, rgb(49, 51, 61), rgb(5, 5, 8))',
-        primaryLinear: 'linear-gradient(to right bottom, rgb(234, 216, 170), rgb(227, 186, 124))',
-        buttonGrayLinear: 'linear-gradient(150deg, rgb(97, 95, 100) 0%, rgb(80, 78, 81) 30%, rgb(60, 58, 63) 100%)',
+        highlightLinear: 'linear-gradient(to right, #FF5C01, #FFD25F)',
     }
 });
-
-export default theme;

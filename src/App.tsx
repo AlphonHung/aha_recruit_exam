@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import Box from '@mui/material/Box';
-import theme from './styles/theme';
+import { theme } from './styles/theme';
 import MainRoute from './routers/MainRoute';
 
 /** 根節點 */

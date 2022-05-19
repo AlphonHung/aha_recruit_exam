@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import Slider from '@mui/material/Slider';
+import { theme } from '../styles/theme';
 
 const PAGE_SIZE_MARKS = [3, 10, 20, 30, 40, 50].map(value => ({ value, label: value.toString() }));
 
@@ -29,7 +30,7 @@ export function PageSizeSlider(props: { defaultValue: number; handleChange: (eve
                 },
                 '& .MuiSlider-track': {
                     border: 'none',
-                    backgroundImage: 'linear-gradient(to right, #FF5C01, #FFD25F)'
+                    backgroundImage: theme.custom.highlightLinear
                 },
                 '& .MuiSlider-thumb': {
                     height: 26,
@@ -50,7 +51,8 @@ export function PageSizeSlider(props: { defaultValue: number; handleChange: (eve
                     fontSize: '0.8rem',
                     color: '#FFFFFF',
                     opacity: 0.5,
-                    lineHeight: 1.5
+                    lineHeight: 1.5,
+                    marginTop: '5px'
                 },
                 '& .MuiSlider-markLabelActive': {
                     opacity: 1
