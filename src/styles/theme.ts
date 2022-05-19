@@ -24,11 +24,11 @@ declare module '@mui/material/styles' {
 const theme = createTheme({
     spacing: 10,
     palette: {
-        // primary: {
-        //     main: 'rgb(222, 192, 154)',
-        // },
+        primary: {
+            main: '#FFFFFF',
+        },
         text: {
-            primary: '#ffffff',
+            primary: '#FFFFFF',
         },
         background: {
             default: '#181818',

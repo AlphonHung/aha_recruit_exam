@@ -4,40 +4,45 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
-import { Input } from '../components/Input';
-import { PageSizeSlider } from '../components/Slider';
-
-
+import { CustomInput } from '../components/CustomInputs';
+import { PageSizeSlider } from '../components/CustomSliders';
+import { CustomBlockButton } from '../components/CustomButtons';
 
 export const Home = () => {
+    const [keyword, setKeyword] = useState('');
     const [pageSize, setPageSize] = useState(10);
 
-    const handleChange = useCallback((event: Event, newValue: number | number[], activeThumb: number) => {
+    const handleKeywordInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.value !== keyword) setKeyword(event.target.value);
+    }, [keyword])
+
+    const handlePageSizeChange = useCallback((event: Event, newValue: number | number[], activeThumb: number) => {
         if (typeof newValue === 'number') {
             setPageSize(newValue);
         }
     }, [])
 
     return (
-        <Container maxWidth={'lg'}>
-            <Box height={1}>
-                <Stack height={1} flex={1} spacing={2} sx={{ paddingTop: 5.4 }}>
-                    <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5}>Search</Typography>
-                    <Input placeholder={"Keyword"} />
+        <Container maxWidth={'md'}>
+            <Stack height={1} flex={1} spacing={2} sx={{ pt: 5.4, pb: 8.7 }}>
+                <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5}>Search</Typography>
+                <CustomInput placeholder={"Keyword"} handleInput={handleKeywordInput} />
+                <Box sx={{ py: 1 }}>
                     <Divider sx={{ borderColor: '#FFFFFF1A' }} />
-                    <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5}># Of Results Per Page</Typography>
-                    <Typography variant="body1" component="p" fontSize={'0.8rem'}>
-                        <span style={{ fontSize: 48, fontWeight: 700, marginRight: 10, lineHeight: 0.875 }}>{pageSize}</span>
-                        results
-                    </Typography>
-                    <PageSizeSlider defaultValue={pageSize} handleChange={handleChange} />
+                </Box>
+                <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5}># Of Results Per Page</Typography>
+                <Typography variant="body1" component="p" fontSize={'0.8rem'}>
+                    <span style={{ fontSize: 48, fontWeight: 700, marginRight: 10, lineHeight: 0.875 }}>{pageSize}</span>
+                    results
+                </Typography>
+                <PageSizeSlider defaultValue={pageSize} handleChange={handlePageSizeChange} />
+                <Box sx={{ pt: 3, pb: 1 }}>
                     <Divider sx={{ borderColor: '#FFFFFF1A' }} />
-                    <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"}>
-                        <Button variant="contained">SEARCH</Button>
-                    </Box>
-                </Stack>
-            </Box>
+                </Box>
+                <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"}>
+                    <CustomBlockButton>{'Search Wiiii'}</CustomBlockButton>
+                </Box>
+            </Stack>
         </Container>
     )
 }
