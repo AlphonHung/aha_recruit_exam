@@ -40,7 +40,7 @@ export const Home = () => {
                     <Divider sx={{ borderColor: '#FFFFFF1A' }} />
                 </Box>
                 <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"}>
-                    <CustomBlockButton>{'Search Wiiii'}</CustomBlockButton>
+                    <CustomBlockButton>{'Search'}</CustomBlockButton>
                 </Box>
             </Stack>
         </Container>

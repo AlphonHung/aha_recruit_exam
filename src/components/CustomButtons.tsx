@@ -14,6 +14,7 @@ export function CustomBlockButton(props: { children: React.ReactNode; handleClic
             sx={{
                 width: '100%',
                 maxWidth: '343px',
+                backgroundColor: 'white',
                 border: '1px solid #FFFFFF',
                 fontSize: '0.7rem',
                 fontWeight: 700,
