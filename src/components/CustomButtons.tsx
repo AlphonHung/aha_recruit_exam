@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import { useLayout } from '../context/LayoutContext';
 
 /** A custom block level button for any common use.
  *
@@ -7,13 +8,14 @@ import Button from '@mui/material/Button';
  * @param handleClick Callback fired when click button.
  */
 export function CustomBlockButton(props: { children: React.ReactNode; handleClick?: () => void; }) {
+    const { mobileMode } = useLayout();
     return (
         <Button
             variant="contained"
             onClick={props.handleClick}
             sx={{
                 width: '100%',
-                maxWidth: '343px',
+                maxWidth: mobileMode ? undefined : '343px',
                 backgroundColor: 'white',
                 border: '1px solid #FFFFFF',
                 fontSize: '0.7rem',

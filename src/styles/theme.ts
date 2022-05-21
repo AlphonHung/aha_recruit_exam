@@ -30,9 +30,7 @@ export const theme = createTheme({
         },
         background: {
             default: '#181818',
-        },
-        contrastThreshold: 3,
-        tonalOffset: 0.2,
+        }
     },
     shape: {
         borderRadius: 0

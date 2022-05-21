@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import Slider from '@mui/material/Slider';
-import { theme } from '../styles/theme';
+import { useTheme } from '@mui/material/styles';
 
 const PAGE_SIZE_MARKS = [3, 10, 20, 30, 40, 50].map(value => ({ value, label: value.toString() }));
 
@@ -10,6 +10,7 @@ const PAGE_SIZE_MARKS = [3, 10, 20, 30, 40, 50].map(value => ({ value, label: va
  * @param handleChange Callback fired when the slider's value changed.
  */
 export function PageSizeSlider(props: { defaultValue: number; handleChange: (event: Event, newValue: number | number[], activeThumb: number) => void; }) {
+    const theme = useTheme();
     const defaultValueRef = useRef(props.defaultValue);
 
     return (
@@ -25,7 +26,7 @@ export function PageSizeSlider(props: { defaultValue: number; handleChange: (eve
                 color: '#FFD05D',
                 height: 8,
                 '& .MuiSlider-rail': {
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: 'white',
                     opacity: 0.3
                 },
                 '& .MuiSlider-track': {
@@ -49,7 +50,7 @@ export function PageSizeSlider(props: { defaultValue: number; handleChange: (eve
                 },
                 '& .MuiSlider-markLabel': {
                     fontSize: '0.8rem',
-                    color: '#FFFFFF',
+                    color: 'white',
                     opacity: 0.5,
                     lineHeight: 1.5,
                     marginTop: '5px'

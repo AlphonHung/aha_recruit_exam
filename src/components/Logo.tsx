@@ -1,8 +1,9 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import { theme } from '../styles/theme';
+import { useTheme } from '@mui/material/styles';
 
 export function Logo() {
+    const theme = useTheme();
     return (
         <Typography
             variant="h1"
