@@ -1,14 +1,11 @@
 import React, { useMemo } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
-// import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { createSvgIcon } from '@mui/material/utils';
-// import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useLayout } from '../context/LayoutContext';
 import { Logo } from '../components/Logo';
 
@@ -27,7 +24,7 @@ const LeftArrowIcon = createSvgIcon(
 /** A link item component inside NavBar. */
 function NavBarItem(props: { label: string; link: string; hideBadge?: boolean }) {
     const location = useLocation();
-    const { mobileMode } = useLayout();
+    const { mdDown } = useLayout();
     const active = useMemo(() => location.pathname === props.link, [location])
     return (
         <Link to={props.link}>
@@ -35,7 +32,7 @@ function NavBarItem(props: { label: string; link: string; hideBadge?: boolean })
                 <Badge color='primary' variant='dot' invisible={props.hideBadge} sx={{ p: '2px' }}>
                     <PageIcon style={{ fontSize: 24, color: active ? 'white' : '#8A8A8F' }} />
                 </Badge>
-                {!mobileMode && <Typography variant='body1' component='div' fontSize={0.6} lineHeight={1.5} color={'white'} sx={{ visibility: active ? 'visible' : 'hidden', mt: '-2px' }}>{props.label}</Typography>}
+                {!mdDown && <Typography variant='body1' component='div' fontSize={0.6} lineHeight={1.5} color={'white'} sx={{ visibility: active ? 'visible' : 'hidden', mt: '-2px' }}>{props.label}</Typography>}
             </Stack>
         </Link>
     )
@@ -56,8 +53,7 @@ function MobileBackButton() {
 /** NavBar that displays in top or left of screen. */
 function TopNavBar() {
     const theme = useTheme();
-    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
-    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+    const { mdDown, smDown } = useLayout();
     const location = useLocation();
     const showBackButton = useMemo(() => mdDown && location.pathname !== '/', [mdDown, location])
 
@@ -90,8 +86,7 @@ function TopNavBar() {
 
 /** NavBar that displays in bottom of screen when in mobile device */
 function BottomTabBar() {
-    const theme = useTheme();
-    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
+    const { mdDown } = useLayout();
     const location = useLocation();
 
     if (!mdDown || location.pathname !== '/') return null;

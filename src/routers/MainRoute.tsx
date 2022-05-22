@@ -9,9 +9,9 @@ import { NavBar } from '../components/NavBar';
 
 /** Main routes with basic layout */
 const MainRoute = () => {
-    const { mobileMode } = useLayout();
+    const { mdDown } = useLayout();
     return (
-        <Stack direction={mobileMode ? 'column' : 'row'} height={1}>
+        <Stack direction={mdDown ? 'column' : 'row'} height={1}>
             <NavBar location={'top'} />
             <Box flex={1} sx={{ overflowY: 'scroll' }}>
                 <Switch>

@@ -3,8 +3,6 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { useLayout } from '../context/LayoutContext';
 
 interface TagData {
@@ -15,14 +13,13 @@ interface TagData {
 
 /** Display a tag in the form of card. */
 function TagCard(props: { tag?: TagData; }) {
-    const theme = useTheme();
-    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+    const { smDown } = useLayout();
 
     if (props.tag === undefined) return (
         <Box width={smDown ? 'calc((100% - 24px)/2)' : '150px'}>
-            <Skeleton variant="rectangular" width={150} height={150} sx={{ borderRadius: '10px' }} />
-            <Skeleton variant="text" sx={{ mt: '10px' }} />
-            <Skeleton variant="text" />
+            <Skeleton variant="rectangular" width={'100%'} height={150} sx={{ borderRadius: '10px' }} />
+            <Skeleton variant="text" sx={{ mt: '10px', borderRadius: '6px' }} />
+            <Skeleton variant="text" sx={{ borderRadius: '6px' }} />
         </Box>
     )
 
@@ -41,7 +38,7 @@ function TagCard(props: { tag?: TagData; }) {
 
 export function Tags() {
     const [tags, setTags] = useState<TagData[] | undefined[]>(new Array(10).fill(0).map(x => undefined));
-    const { mobileMode } = useLayout();
+    const { mdDown } = useLayout();
     useEffect(() => {
         fetch('https://avl-frontend-exam.herokuapp.com/api/tags')
             .then(res => res.json())
@@ -49,8 +46,8 @@ export function Tags() {
             .catch(err => { console.log(err) })
     }, [])
     return (
-        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mobileMode ? 2 : 5.4, pb: mobileMode ? 2.4 : 8.7 }}>
-            <Typography variant="h4" component="h4" fontSize={mobileMode ? '1.2rem' : '1.5rem'} lineHeight={1.5} mb={2.4}>Tags</Typography>
+        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 2 : 5.4, pb: mdDown ? 2.4 : 8.7 }}>
+            <Typography variant="h4" component="h4" fontSize={mdDown ? '1.2rem' : '1.5rem'} lineHeight={1.5} mb={2.4}>Tags</Typography>
             <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} rowGap={3.6} columnGap={2.4}>
                 {tags.map((tag, i) => (<TagCard key={`tag_${i}`} tag={tag} />))}
             </Box>
