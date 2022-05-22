@@ -50,6 +50,15 @@ export const theme = createTheme({
             '"Segoe UI Symbol"',
         ].join(','),
     },
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 910,
+            lg: 1200,
+            xl: 1536,
+        },
+    },
     custom: {
         backgroundLinear: 'linear-gradient(to right bottom, rgb(49, 51, 61), rgb(5, 5, 8))',
         highlightLinear: 'linear-gradient(to right, #FF5C01, #FFD25F)',
