@@ -25,7 +25,7 @@ export function Home() {
     }, [])
 
     return (
-        <Container maxWidth={'md'} sx={{ flex: 1 }}>
+        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mobileMode ? 0 : 5.4, pb: mobileMode ? 2.4 : 8.7 }}>
             <Stack height={1} spacing={mobileMode ? 1.6 : 2}>
                 <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5}>Search</Typography>
                 <CustomInput placeholder={"Keyword"} handleInput={handleKeywordInput} />

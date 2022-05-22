@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
+// import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { createSvgIcon } from '@mui/material/utils';
+// import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useLayout } from '../context/LayoutContext';
 import { Logo } from '../components/Logo';
 
@@ -15,7 +18,13 @@ const PageIcon = createSvgIcon(
     'Nav',
 );
 
-/** One link item inside NavBar. */
+/** Back icon in NavBar */
+const LeftArrowIcon = createSvgIcon(
+    <path d="M13.2702 2.10349L11.3333 0.166626L0.5 11L11.3333 21.8333L13.2702 19.8964L4.37374 11L13.2702 2.10349Z" transform='translate(5.615, 1.165)' />,
+    'Back'
+);
+
+/** A link item component inside NavBar. */
 function NavBarItem(props: { label: string; link: string; hideBadge?: boolean }) {
     const location = useLocation();
     const { mobileMode } = useLayout();
@@ -32,29 +41,85 @@ function NavBarItem(props: { label: string; link: string; hideBadge?: boolean })
     )
 }
 
-export function NavBar() {
-    const { mobileMode } = useLayout();
+/** The button to switch the page back to the home page in mobile screen. */
+function MobileBackButton() {
+    return (
+        <Link to={'/'} style={{ textDecoration: 'none' }}>
+            <Stack direction={'row'} alignItems={'center'}>
+                <LeftArrowIcon style={{ fontSize: 26, color: 'white' }} />
+                <Typography variant="h5" component="h5" fontWeight={700} fontSize={'1.2rem'} lineHeight={1.5} pl={1.316} sx={{ color: 'white' }}>{'Home Page'}</Typography>
+            </Stack>
+        </Link>
+    )
+}
+
+/** NavBar that displays in top or left of screen. */
+function TopNavBar() {
+    const theme = useTheme();
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+    const location = useLocation();
+    const showBackButton = useMemo(() => mdDown && location.pathname !== '/', [mdDown, location])
+
+    const px = useMemo(() => {
+        if (smDown) return 1.9;
+        else if (mdDown) return 2.9;
+        return 0;
+    }, [smDown, mdDown])
 
     return (
         <Box
             component={'nav'}
-            width={mobileMode ? undefined : '80px'}
-            height={mobileMode ? '66px' : undefined}
-            py={mobileMode ? undefined : 3.7}
+            width={mdDown ? undefined : '80px'}
+            height={mdDown ? '66px' : undefined}
+            px={px}
+            py={mdDown ? undefined : 3.7}
             display={'flex'}
-            flexDirection={mobileMode ? 'row' : 'column'}
-            justifyContent={mobileMode ? 'center' : 'flex-start'}
+            flexDirection={mdDown ? 'row' : 'column'}
+            justifyContent={'flex-start'}
+            alignItems={'center'}
+            sx={{ background: mdDown ? '#181818' : '#1B1B1B' }}>
+            {showBackButton ? <MobileBackButton /> : <Logo />}
+            {!mdDown && <Stack spacing={2} mt={4}>
+                <NavBarItem label={'Home'} link={'/'} hideBadge={true} />
+                <NavBarItem label={'Tags'} link={'/tags'} />
+            </Stack>}
+        </Box>
+    )
+}
+
+/** NavBar that displays in bottom of screen when in mobile device */
+function BottomTabBar() {
+    const theme = useTheme();
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
+    const location = useLocation();
+
+    if (!mdDown || location.pathname !== '/') return null;
+    return (
+        <Box
+            component={'nav'}
+            height={'66px'}
+            display={'flex'}
+            flexDirection={'row'}
+            justifyContent={'center'}
             alignItems={'center'}
             sx={{
-                background: mobileMode ? 'rgba(24, 24, 24, 0.2)' : '#1B1B1B',
+                background: 'rgba(24, 24, 24, 0.2)',
                 boxShadow: 'inset 0px 0.5px 0px rgba(0, 0, 0, 0.8)',
                 backdropFilter: 'blur(54.3656px)'
             }}>
-            {!mobileMode && <Logo />}
-            <Stack direction={mobileMode ? 'row' : undefined} spacing={mobileMode ? 5 : 2} mt={mobileMode ? undefined : 4}>
+            <Stack direction={'row'} spacing={5}>
                 <NavBarItem label={'Home'} link={'/'} hideBadge={true} />
                 <NavBarItem label={'Tags'} link={'/tags'} />
             </Stack>
         </Box>
     )
+}
+
+export function NavBar(props: { location: 'top' | 'bottom' }) {
+    switch (props.location) {
+        case 'top': return <TopNavBar />;
+        case 'bottom': return <BottomTabBar />;
+    }
+    return null;
 }
