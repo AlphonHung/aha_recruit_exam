@@ -37,21 +37,37 @@ function TagCard(props: { tag?: TagData; }) {
     )
 }
 
+/** Skeletons on result list when loading. */
+function LoadingSkeletons(props: { visible: boolean; size: number; }) {
+    if (!props.visible) return null;
+    return (
+        <React.Fragment>
+            {new Array(props.size).fill('').map((tag, i) => (<TagCard key={`fake_${i}`} tag={undefined} />))}
+        </React.Fragment>
+    )
+}
+
 /** Tags page */
 export function Tags() {
-    const [tags, setTags] = useState<TagData[] | undefined[]>(new Array(10).fill(0).map(x => undefined));
+    const [tags, setTags] = useState<TagData[]>([]);
+    const [loading, setLoading] = useState(false);
     const { mdDown } = useLayout();
+
     useEffect(() => {
+        setLoading(true);
         fetch('https://avl-frontend-exam.herokuapp.com/api/tags')
             .then(res => res.json())
             .then(data => { setTags(data); })
             .catch(err => { console.log(err) })
+            .finally(() => { setLoading(false) });
     }, [])
+
     return (
         <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 2 : 5.4, pb: mdDown ? 2.4 : 8.7 }}>
             <Typography variant="h4" component="h4" fontSize={mdDown ? '1.2rem' : '1.5rem'} lineHeight={1.5} mb={2.4}>Tags</Typography>
             <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} rowGap={3.6} columnGap={2.4}>
                 {tags.map((tag, i) => (<TagCard key={`tag_${i}`} tag={tag} />))}
+                <LoadingSkeletons visible={loading} size={10} />
             </Box>
         </Container>
     )

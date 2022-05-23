@@ -81,41 +81,73 @@ function UserCard(props: { user?: UserData; }) {
     )
 }
 
+/** If there is no data after loading, shows this hint to user. */
+function NoResultHint(props: { visible: boolean; }) {
+    if (!props.visible) return null;
+    return (
+        <Typography variant="body1">{'No data found.'}</Typography>
+    )
+}
+
+/** Skeletons on result list when loading. */
+function LoadingSkeletons(props: { visible: boolean; size: number; }) {
+    if (!props.visible) return null;
+    return (
+        <React.Fragment>
+            {new Array(props.size).fill('').map((user, i) => (<UserCard key={`fake_${i}`} user={undefined} />))}
+        </React.Fragment>
+    )
+}
+
 /** Search results page */
 export function Results() {
     const { mdDown } = useLayout();
     const { search } = useLocation();
     const urlParams = new URLSearchParams(search);
-    const keyword = urlParams.get('keyword');
-    const pageSize = urlParams.get('pageSize');
+    const keyword = urlParams.get('keyword') || '';
+    const pageSize = Number(urlParams.get('pageSize')) || 10;
     const [page, setPage] = useState(1);
-    const [users, setUsers] = useState<(UserData | undefined)[]>(new Array(6).fill(0).map(x => undefined));
+    const [repeat, setRepeat] = useState(1); // A counter for Infinite loading with same api.
+    const [users, setUsers] = useState<UserData[]>([]);
+    const [loading, setLoading] = useState(false);
     const totalPages = useRef(0);
 
     useEffect(() => {
+        setLoading(true);
         fetch(`https://avl-frontend-exam.herokuapp.com/api/users/all?page=${page}&pageSize=${pageSize}&keyword=${keyword}`)
             .then(res => res.json())
             .then(data => {
                 const result: SearchResult<UserData[]> = data;
                 totalPages.current = result.totalPages;
-                if (page === 1) setUsers(result.data);
-                else setUsers([...users].concat(result.data));
+                setUsers([...users].concat(result.data));
             })
             .catch(err => { console.log(err) })
-    }, [page])
+            .finally(() => { setLoading(false); })
+    }, [page, repeat])
 
     const handleNextPage = useCallback(() => {
-        setPage(page + 1);
-    }, [page])
+        let nextPage = page;
+        let nextRepeat = repeat
+        // Start a new round to load from page 1
+        if (page === totalPages.current) {
+            nextRepeat += 1;
+            nextPage = 1;
+        } else {
+            nextPage += 1;
+        }
+        setRepeat(nextRepeat)
+        setPage(nextPage);
+    }, [page, repeat])
 
     return (
         <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 2 : 9.2, pb: mdDown ? 2.4 : 8.7 }}>
             <ResultsPageTitle />
             <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} mt={2.4} px={mdDown ? undefined : 4.3585} rowGap={3.1} columnGap={3.6}>
+                <NoResultHint visible={!loading && users.length === 0} />
                 {users.map((user, i) => (<UserCard key={`user_${i}`} user={user} />))}
-                {users.length === 0 && <Typography variant="body1">{'No data found.'}</Typography>}
+                <LoadingSkeletons visible={loading} size={users.length === 0 ? 6 : 3} />
             </Box>
-            {(users.length > 0 && page < totalPages.current) && <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"} mt={3.9} px={mdDown ? undefined : 4.3585}>
+            {users.length > 0 && <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"} mt={3.9} px={mdDown ? undefined : 4.3585}>
                 <CustomBlockButton handleClick={handleNextPage}>{'More'}</CustomBlockButton>
             </Box>}
         </Container>
