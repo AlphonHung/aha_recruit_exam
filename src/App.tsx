@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import { LayoutProvider } from './context/LayoutContext';
 import { ErrorBoundary } from './views/ErrorBoundary';
 import { theme } from './styles/theme';
-import MainRoute from './routers/MainRoute';
+import { MainRoute } from './routers/MainRoute';
 
 /** 根節點 */
 const App = () => (

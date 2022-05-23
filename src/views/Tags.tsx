@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -14,17 +14,18 @@ interface TagData {
 /** Display a tag in the form of card. */
 function TagCard(props: { tag?: TagData; }) {
     const { smDown } = useLayout();
+    const width = useMemo(() => smDown ? 'calc((100% - 24px)/2)' : '150px', [smDown])
 
     if (props.tag === undefined) return (
-        <Box width={smDown ? 'calc((100% - 24px)/2)' : '150px'}>
+        <Box width={width}>
             <Skeleton variant="rectangular" width={'100%'} height={150} sx={{ borderRadius: '10px' }} />
-            <Skeleton variant="text" sx={{ mt: '10px', borderRadius: '6px' }} />
-            <Skeleton variant="text" sx={{ borderRadius: '6px' }} />
+            <Skeleton variant="text" sx={{ mt: '10px' }} />
+            <Skeleton variant="text" />
         </Box>
     )
 
     return (
-        <Box width={smDown ? 'calc((100% - 24px)/2)' : '150px'}>
+        <Box width={width}>
             <Box width={1} height={'150px'} borderRadius={'10px'} px={1} py={1.4} display={'flex'} alignItems={'flex-end'} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}>
                 <Box borderRadius={'8px'} width={1} height={'50px'} px={1} py={0.3} sx={{ border: '4px solid #FFFFFF' }}>
                     <Typography variant="h5" component="h5" fontWeight={700} fontSize={'1.2rem'} lineHeight={1.5} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>{props.tag.name}</Typography>
@@ -36,6 +37,7 @@ function TagCard(props: { tag?: TagData; }) {
     )
 }
 
+/** Tags page */
 export function Tags() {
     const [tags, setTags] = useState<TagData[] | undefined[]>(new Array(10).fill(0).map(x => undefined));
     const { mdDown } = useLayout();

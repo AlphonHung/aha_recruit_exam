@@ -8,14 +8,14 @@ import { useLayout } from '../context/LayoutContext';
  * @param handleClick Callback fired when click button.
  */
 export function CustomBlockButton(props: { children: React.ReactNode; handleClick?: () => void; }) {
-    const { mdDown } = useLayout();
+    const { smDown } = useLayout();
     return (
         <Button
             variant="contained"
             onClick={props.handleClick}
             sx={{
                 width: '100%',
-                maxWidth: mdDown ? undefined : '343px',
+                maxWidth: smDown ? undefined : '343px',
                 backgroundColor: 'white',
                 border: '1px solid #FFFFFF',
                 fontSize: '0.7rem',

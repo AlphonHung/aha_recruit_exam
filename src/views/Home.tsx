@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -10,6 +11,7 @@ import { PageSizeSlider } from '../components/CustomSliders';
 import { CustomBlockButton } from '../components/CustomButtons';
 
 export function Home() {
+    const history = useHistory();
     const { mdDown } = useLayout();
     const [keyword, setKeyword] = useState('');
     const [pageSize, setPageSize] = useState(10);
@@ -23,6 +25,10 @@ export function Home() {
             setPageSize(newValue);
         }
     }, [])
+
+    const handleClickSearch = () => {
+        history.push(`/results?${keyword.length > 0 ? `keyword=${keyword}` : ''}&pageSize=${pageSize}`)
+    }
 
     return (
         <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 0 : 5.4, pb: mdDown ? 2.4 : 8.7 }}>
@@ -42,7 +48,7 @@ export function Home() {
                     <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
                 </Box>}
                 <Box flex={1} minHeight={'66px'} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"}>
-                    <CustomBlockButton>{'Search'}</CustomBlockButton>
+                    <CustomBlockButton handleClick={handleClickSearch}>{'Search'}</CustomBlockButton>
                 </Box>
             </Stack>
         </Container>
