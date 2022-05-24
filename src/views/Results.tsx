@@ -7,23 +7,8 @@ import Skeleton from '@mui/material/Skeleton';
 import { useLayout } from '../context/LayoutContext';
 import { BackButton } from '../components/BackButton';
 import { CustomBlockButton } from '../components/CustomButtons';
-import { ConstructionOutlined } from '@mui/icons-material';
-
-interface SearchResult<T> {
-    data: T;
-    page: number;
-    pageSize: number;
-    total: number;
-    totalPages: number;
-}
-
-interface UserData {
-    id: string;
-    name: string;
-    username: string;
-    avater: string;
-    isFollowing: boolean;
-}
+import { LoadingSkeletons } from '../components/LoadingSkeletons';
+import { SearchResult, UserData } from '../domain';
 
 /** PC mode: back button. Mobile mode: page title */
 function ResultsPageTitle() {
@@ -61,8 +46,8 @@ function UserCard(props: { user?: UserData; }) {
             <AspectRatioBox width={'100%'} ratio={219 / 146}>
                 <Skeleton variant="rectangular" width={'100%'} height={'100%'} />
             </AspectRatioBox>
-            <Skeleton variant="text" sx={{ mt: '12px' }} />
-            <Skeleton variant="text" />
+            <Skeleton variant="text" sx={{ mt: '12px', borderRadius: '6px' }} />
+            <Skeleton variant="text" sx={{ borderRadius: '6px' }} />
         </Box>
     )
 
@@ -86,16 +71,6 @@ function NoResultHint(props: { visible: boolean; }) {
     if (!props.visible) return null;
     return (
         <Typography variant="body1">{'No data found.'}</Typography>
-    )
-}
-
-/** Skeletons on result list when loading. */
-function LoadingSkeletons(props: { visible: boolean; size: number; }) {
-    if (!props.visible) return null;
-    return (
-        <React.Fragment>
-            {new Array(props.size).fill('').map((user, i) => (<UserCard key={`fake_${i}`} user={undefined} />))}
-        </React.Fragment>
     )
 }
 
@@ -145,7 +120,9 @@ export function Results() {
             <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} mt={2.4} px={mdDown ? undefined : 4.3585} rowGap={3.1} columnGap={3.6}>
                 <NoResultHint visible={!loading && users.length === 0} />
                 {users.map((user, i) => (<UserCard key={`user_${i}`} user={user} />))}
-                <LoadingSkeletons visible={loading} size={users.length === 0 ? 6 : 3} />
+                <LoadingSkeletons visible={loading} size={users.length === 0 ? 6 : 3}>
+                    <UserCard user={undefined} />
+                </LoadingSkeletons>
             </Box>
             {users.length > 0 && <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"} mt={3.9} px={mdDown ? undefined : 4.3585}>
                 <CustomBlockButton handleClick={handleNextPage}>{'More'}</CustomBlockButton>

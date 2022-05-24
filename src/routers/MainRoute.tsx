@@ -7,6 +7,7 @@ import { Home } from '../views/Home';
 import { Results } from '../views/Results';
 import { Tags } from '../views/Tags';
 import { NavBar } from '../components/NavBar';
+import { Followers } from '../components/Followers';
 
 /** Main routes with basic layout */
 export function MainRoute() {
@@ -25,7 +26,7 @@ export function MainRoute() {
                 </Switch>
             </Box>
             <NavBar location={'bottom'} />
-            {/** todo: followers */}
+            <Followers />
         </Stack>
 
     );

@@ -30,3 +30,28 @@ export function CustomBlockButton(props: { children: React.ReactNode; handleClic
         </Button>
     )
 }
+
+/** Follow button in UserRow. */
+export function FollowButton(props: { isFollowing: boolean; handleClick?: () => void; }) {
+    return (
+        <Button
+            variant="outlined"
+            onClick={props.handleClick}
+            sx={{
+                fontSize: 1,
+                lineHeight: 1,
+                padding: '8px 10px',
+                borderRadius: '20px',
+                textTransform: 'initial',
+                backgroundColor: props.isFollowing ? 'white' : undefined,
+                border: '1px solid white',
+                color: props.isFollowing ? '#121212' : undefined,
+                '&:hover': {
+                    color: props.isFollowing ? 'white' : '#121212',
+                    backgroundColor: props.isFollowing ? '#121212' : 'white'
+                }
+            }}>
+            {props.isFollowing ? 'Following' : 'Follow'}
+        </Button>
+    )
+}

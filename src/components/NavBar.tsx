@@ -24,7 +24,7 @@ function NavBarItem(props: { label: string; link: string; hideBadge?: boolean })
     return (
         <Link to={props.link}>
             <Stack alignItems={'center'}>
-                <Badge color='primary' variant='dot' invisible={props.hideBadge} sx={{ p: '2px' }}>
+                <Badge variant='dot' invisible={props.hideBadge} sx={{ p: '2px', '.MuiBadge-badge': { backgroundColor: '#00D1FF' } }}>
                     <PageIcon style={{ fontSize: 24, color: active ? 'white' : '#8A8A8F' }} />
                 </Badge>
                 {!mdDown && <Typography variant='body1' component='div' fontSize={0.6} lineHeight={1.5} color={'white'} sx={{ visibility: active ? 'visible' : 'hidden', mt: '-2px' }}>{props.label}</Typography>}

@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import { useLayout } from '../context/LayoutContext';
+import { LoadingSkeletons } from '../components/LoadingSkeletons';
 
 interface TagData {
     id: string;
@@ -19,8 +20,8 @@ function TagCard(props: { tag?: TagData; }) {
     if (props.tag === undefined) return (
         <Box width={width}>
             <Skeleton variant="rectangular" width={'100%'} height={150} sx={{ borderRadius: '10px' }} />
-            <Skeleton variant="text" sx={{ mt: '10px' }} />
-            <Skeleton variant="text" />
+            <Skeleton variant="text" sx={{ mt: '10px', borderRadius: '6px' }} />
+            <Skeleton variant="text" sx={{ borderRadius: '6px' }} />
         </Box>
     )
 
@@ -34,16 +35,6 @@ function TagCard(props: { tag?: TagData; }) {
             <Typography variant="body1" fontSize={'14.9px'} lineHeight={1.5} mt={1} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>{props.tag.name}</Typography>
             <Typography variant="body1" fontSize={'11.175px'} lineHeight={1.5} sx={{ color: '#B2B2B2' }}>{`${props.tag.count} Results`}</Typography>
         </Box>
-    )
-}
-
-/** Skeletons on result list when loading. */
-function LoadingSkeletons(props: { visible: boolean; size: number; }) {
-    if (!props.visible) return null;
-    return (
-        <React.Fragment>
-            {new Array(props.size).fill('').map((tag, i) => (<TagCard key={`fake_${i}`} tag={undefined} />))}
-        </React.Fragment>
     )
 }
 
@@ -67,7 +58,9 @@ export function Tags() {
             <Typography variant="h4" component="h4" fontSize={mdDown ? '1.2rem' : '1.5rem'} lineHeight={1.5} mb={2.4}>Tags</Typography>
             <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} rowGap={3.6} columnGap={2.4}>
                 {tags.map((tag, i) => (<TagCard key={`tag_${i}`} tag={tag} />))}
-                <LoadingSkeletons visible={loading} size={10} />
+                <LoadingSkeletons visible={loading} size={10}>
+                    <TagCard tag={undefined} />
+                </LoadingSkeletons>
             </Box>
         </Container>
     )

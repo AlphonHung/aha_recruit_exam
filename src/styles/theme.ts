@@ -23,7 +23,7 @@ export const theme = createTheme({
     spacing: 10,
     palette: {
         primary: {
-            main: '#00D1FF',
+            main: '#FFFFFF',
         },
         text: {
             primary: '#FFFFFF',
