@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -11,7 +11,7 @@ import { SearchResult, UserData } from '../domain';
 import { LoadingSkeletons } from '../components/LoadingSkeletons';
 import { FollowButton, CustomBlockButton } from '../components/CustomButtons';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 /** Get tab attributes by index. */
 function a11yProps(index: number) {
@@ -107,16 +107,23 @@ function UserRow(props: { user?: UserData; }) {
 /** Auto generated followers list.
  * The documentation doesn't mention how to implement infinite loading, so I follow the button design of the results page
  */
-function FollowersListPanel() {
+function FollowersListPanel(props: { type: 'all' | 'friends' }) {
     const [page, setPage] = useState(1);
     const [repeat, setRepeat] = useState(1); // A counter for Infinite loading with same api.
     const [users, setUsers] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(true);
     const totalPages = useRef(0);
 
+    const url = useMemo(() => {
+        switch (props.type) {
+            case 'friends': return 'https://avl-frontend-exam.herokuapp.com/api/users/friends';
+            default: return 'https://avl-frontend-exam.herokuapp.com/api/users/all'
+        }
+    }, [props.type])
+
     useEffect(() => {
         setLoading(true);
-        fetch(`https://avl-frontend-exam.herokuapp.com/api/users/all?page=${page}&pageSize=${PAGE_SIZE}`)
+        fetch(`${url}?page=${page}&pageSize=${PAGE_SIZE}`)
             .then(res => res.json())
             .then(data => {
                 const result: SearchResult<UserData[]> = data;
@@ -125,7 +132,7 @@ function FollowersListPanel() {
             })
             .catch(err => { console.log(err) })
             .finally(() => { setLoading(false); })
-    }, [page, repeat])
+    }, [page, repeat, url])
 
     const handleNextPage = useCallback(() => {
         let nextPage = page;
@@ -152,10 +159,6 @@ function FollowersListPanel() {
     )
 }
 
-function FollowingPanel() {
-
-}
-
 /** Followers on right of screen, only display when screen width is larger than 1440px. */
 export function Followers() {
     const [value, setValue] = useState(0);
@@ -165,10 +168,10 @@ export function Followers() {
         <Stack width={matches ? '375px' : 0} height={1} sx={{ backgroundColor: '#1B1B1B' }}>
             <TopTabs value={value} setValue={setValue} />
             <TabPanel value={value} index={0}>
-                <FollowersListPanel />
+                <FollowersListPanel type={'all'} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Test2
+                <FollowersListPanel type={'friends'} />
             </TabPanel>
         </Stack>
     )
