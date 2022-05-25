@@ -95,7 +95,7 @@ function UserRow(props: { user?: UserData; }) {
             <Stack flexDirection={'row'} alignItems={'center'}>
                 <Box width={'40px'} height={'40px'} borderRadius={'5px'} overflow={'hidden'} sx={{ border: '1px solid white' }}>
                     <img
-                        src={loadError ? '/public/images/avatar_default.png' : props.user.avater}
+                        src={loadError ? '../../public/images/avatar_default.png' : props.user.avater}
                         alt={props.user.name}
                         loading="lazy"
                         style={{ width: '100%', height: '100%' }}
