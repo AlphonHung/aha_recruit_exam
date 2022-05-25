@@ -9,9 +9,9 @@ import Skeleton from '@mui/material/Skeleton';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SearchResult, UserData } from '../domain';
 import { LoadingSkeletons } from '../components/LoadingSkeletons';
-import { FollowButton, CustomBlockButton } from '../components/CustomButtons';
+import { FollowButton } from '../components/CustomButtons';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
 /** Get tab attributes by index. */
 function a11yProps(index: number) {
@@ -65,7 +65,7 @@ function TabPanel(props: { children: React.ReactNode; value: number; index: numb
             hidden={props.value !== props.index}
             id={`simple-tabpanel-${props.index}`}
             aria-labelledby={`simple-tab-${props.index}`}
-            style={{ flex: 1, paddingTop: '23px', paddingBottom: '23px', overflowY: 'scroll' }}>
+            style={{ height: 'calc(100% - 70px)' }}>
             {rendered && props.children}
         </div>
     );
@@ -104,9 +104,7 @@ function UserRow(props: { user?: UserData; }) {
     )
 }
 
-/** Auto generated followers list.
- * The documentation doesn't mention how to implement infinite loading, so I follow the button design of the results page
- */
+/** Auto generated followers list with infinite scroll. */
 function FollowersListPanel(props: { type: 'all' | 'friends' }) {
     const [page, setPage] = useState(1);
     const [repeat, setRepeat] = useState(1); // A counter for Infinite loading with same api.
@@ -120,6 +118,14 @@ function FollowersListPanel(props: { type: 'all' | 'friends' }) {
             default: return 'https://avl-frontend-exam.herokuapp.com/api/users/all'
         }
     }, [props.type])
+
+    // Auto load next page if there are not enough data to scroll.
+    useEffect(() => {
+        if (loading) return;
+        const dataHeight = users.length * 61;
+        if (dataHeight > window.innerHeight) return;
+        handleNextPage();
+    }, [users, loading])
 
     useEffect(() => {
         setLoading(true);
@@ -149,13 +155,20 @@ function FollowersListPanel(props: { type: 'all' | 'friends' }) {
     }, [page, repeat])
 
     return (
-        <Box flex={1}>
+        <div
+            style={{ height: '100%', paddingTop: '23px', paddingBottom: '23px', overflowY: 'scroll' }}
+            onScroll={(e) => {
+                if (loading) return;
+                const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+                const bottomPercent = Math.round(((scrollTop + clientHeight) / scrollHeight) * 100);
+                if (bottomPercent > 90) {
+                    setLoading(true);
+                    handleNextPage();
+                }
+            }}>
             {users.map((user, i) => (<UserRow user={user} />))}
             <LoadingSkeletons visible={loading} size={users.length === 0 ? 10 : 5}><UserRow user={undefined} /></LoadingSkeletons>
-            {users.length > 0 && <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"} mt={3.9} px={2}>
-                <CustomBlockButton handleClick={handleNextPage}>{'More'}</CustomBlockButton>
-            </Box>}
-        </Box>
+        </div>
     )
 }
 

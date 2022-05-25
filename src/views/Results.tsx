@@ -66,7 +66,7 @@ function UserCard(props: { user?: UserData; }) {
     )
 }
 
-/** If there is no data after loading, shows this hint to user. */
+/** If there are no data after loading, shows this hint to user. */
 function NoResultHint(props: { visible: boolean; }) {
     if (!props.visible) return null;
     return (
