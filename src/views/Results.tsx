@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,6 +9,7 @@ import { BackButton } from '../components/BackButton';
 import { CustomBlockButton } from '../components/CustomButtons';
 import { LoadingSkeletons } from '../components/LoadingSkeletons';
 import { SearchResult, UserData } from '../domain';
+import { IMG_SOURCE } from '../constants';
 
 /** PC mode: back button. Mobile mode: page title */
 function ResultsPageTitle() {
@@ -56,7 +57,7 @@ function UserCard(props: { user?: UserData; index: number; }) {
         <Box width={width} maxWidth={maxWidth}>
             <AspectRatioBox width={'100%'} ratio={219 / 146}>
                 <img
-                    src={loadError ? `../../public/images/result_default_${(props.index % 3)}.jpg` : props.user.avater}
+                    src={loadError ? IMG_SOURCE.RESULT_DEFAULT[props.index % 3] : props.user.avater}
                     alt={props.user.name}
                     loading="lazy"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}

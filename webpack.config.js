@@ -37,8 +37,14 @@ module.exports = {
                 test: /\.(png|jpe?g|gif)$/i,
                 loader: 'url-loader',
                 options: {
-                    name: 'assets/img/[name].[hash].[ext]',
-                    limit: 8192,
+                    name: (resourcePath, resourceQuery) => {
+                        if (/assets\/img\/favimg/.test(resourcePath)) {
+                            return '[name].[ext]';
+                        }
+
+                        return 'asssts/img/[name].[hash].[ext]';
+                    },
+                    limit: 1024,
                     esModule: false
                 }
             },
@@ -68,7 +74,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: `${__dirname}/public/index.html`,
             filename: 'index.html',
-            inject: 'body',
+            inject: 'body'
         })
     ]
 };

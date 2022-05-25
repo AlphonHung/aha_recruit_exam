@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -10,6 +9,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { SearchResult, UserData } from '../domain';
 import { LoadingSkeletons } from '../components/LoadingSkeletons';
 import { FollowButton } from '../components/CustomButtons';
+import { IMG_SOURCE } from '../constants';
 
 const PAGE_SIZE = 15;
 
@@ -95,7 +95,7 @@ function UserRow(props: { user?: UserData; }) {
             <Stack flexDirection={'row'} alignItems={'center'}>
                 <Box width={'40px'} height={'40px'} borderRadius={'5px'} overflow={'hidden'} sx={{ border: '1px solid white' }}>
                     <img
-                        src={loadError ? '../../public/images/avatar_default.png' : props.user.avater}
+                        src={loadError ? IMG_SOURCE.AVATAR_DEFAULT : props.user.avater}
                         alt={props.user.name}
                         loading="lazy"
                         style={{ width: '100%', height: '100%' }}
