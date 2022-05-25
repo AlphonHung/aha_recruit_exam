@@ -56,7 +56,7 @@ function UserCard(props: { user?: UserData; index: number; }) {
         <Box width={width} maxWidth={maxWidth}>
             <AspectRatioBox width={'100%'} ratio={219 / 146}>
                 <img
-                    src={loadError ? `/public/images/result_default_${(props.index % 3)}.jpg` : props.user.avater}
+                    src={loadError ? `../../public/images/result_default_${(props.index % 3)}.jpg` : props.user.avater}
                     alt={props.user.name}
                     loading="lazy"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
