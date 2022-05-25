@@ -75,6 +75,8 @@ function TabPanel(props: { children: React.ReactNode; value: number; index: numb
  * The follow button should implement a click event to toggle status with API.
 */
 function UserRow(props: { user?: UserData; }) {
+    const [loadError, setLoadError] = useState(false);
+
     if (props.user === undefined) return (
         <Stack width={1} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} my={0.8} px={1.6}>
             <Stack flexDirection={'row'} alignItems={'center'}>
@@ -92,7 +94,13 @@ function UserRow(props: { user?: UserData; }) {
         <Stack width={1} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} my={0.8} px={1.6}>
             <Stack flexDirection={'row'} alignItems={'center'}>
                 <Box width={'40px'} height={'40px'} borderRadius={'5px'} overflow={'hidden'} sx={{ border: '1px solid white' }}>
-                    <img src={props.user.avater} alt={props.user.name} loading="lazy" style={{ width: '100%', height: '100%' }} />
+                    <img
+                        src={loadError ? '/public/images/avatar_default.png' : props.user.avater}
+                        alt={props.user.name}
+                        loading="lazy"
+                        style={{ width: '100%', height: '100%' }}
+                        onError={() => { setLoadError(true); }}
+                    />
                 </Box>
                 <Box pl={1.5} height={'45px'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'flex-start'}>
                     <Typography variant="body1" fontSize={1} lineHeight={1.5} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>{props.user.name}</Typography>
@@ -177,8 +185,9 @@ export function Followers() {
     const [value, setValue] = useState(0);
     const matches = useMediaQuery('(min-width:1440px)');
 
+    if (!matches) return null;
     return (
-        <Stack width={matches ? '375px' : 0} height={1} sx={{ backgroundColor: '#1B1B1B' }}>
+        <Stack width={'375px'} height={1} sx={{ backgroundColor: '#1B1B1B' }}>
             <TopTabs value={value} setValue={setValue} />
             <TabPanel value={value} index={0}>
                 <FollowersListPanel type={'all'} />

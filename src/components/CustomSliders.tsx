@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import Slider from '@mui/material/Slider';
 import { useTheme } from '@mui/material/styles';
 
+/** Slider marks, I modified the mark to make it more reasonable. */
 const PAGE_SIZE_MARKS = [3, 10, 20, 30, 40, 50].map(value => ({ value, label: value.toString() }));
 
 /** A custom slider for change query's page size.

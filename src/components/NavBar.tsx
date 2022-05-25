@@ -22,7 +22,7 @@ function NavBarItem(props: { label: string; link: string; hideBadge?: boolean })
     const { mdDown } = useLayout();
     const active = useMemo(() => location.pathname === props.link, [location])
     return (
-        <Link to={props.link}>
+        <Link to={props.link} style={{ textDecoration: 'none' }}>
             <Stack alignItems={'center'}>
                 <Badge variant='dot' invisible={props.hideBadge} sx={{ p: '2px', '.MuiBadge-badge': { backgroundColor: '#00D1FF' } }}>
                     <PageIcon style={{ fontSize: 24, color: active ? 'white' : '#8A8A8F' }} />

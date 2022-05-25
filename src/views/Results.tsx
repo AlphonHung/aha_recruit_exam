@@ -35,9 +35,10 @@ function AspectRatioBox(props: { width: number | string; ratio: number; children
     )
 }
 
-/** Display a user in the form of card. */
-function UserCard(props: { user?: UserData; }) {
+/** Display a user in the form of card. If image url not found then use Figma's design picture. */
+function UserCard(props: { user?: UserData; index: number; }) {
     const { smDown } = useLayout();
+    const [loadError, setLoadError] = useState(false);
     const width = useMemo(() => smDown ? '100%' : 'calc((100% - 68px)/3)', [smDown]);
     const maxWidth = useMemo(() => smDown ? undefined : '216px', [smDown]);
 
@@ -55,9 +56,11 @@ function UserCard(props: { user?: UserData; }) {
         <Box width={width} maxWidth={maxWidth}>
             <AspectRatioBox width={'100%'} ratio={219 / 146}>
                 <img
-                    src={props.user.avater}
+                    src={loadError ? `/public/images/result_default_${(props.index % 3)}.jpg` : props.user.avater}
                     alt={props.user.name}
                     loading="lazy"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={() => { setLoadError(true); }}
                 />
             </AspectRatioBox>
             <Typography variant="body1" fontSize={'14.9px'} lineHeight={1.5} mt={1.2} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>{props.user.name}</Typography>
@@ -119,9 +122,9 @@ export function Results() {
             <ResultsPageTitle />
             <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} mt={2.4} px={mdDown ? undefined : 4.3585} rowGap={3.1} columnGap={3.6}>
                 <NoResultHint visible={!loading && users.length === 0} />
-                {users.map((user, i) => (<UserCard key={`user_${i}`} user={user} />))}
+                {users.map((user, i) => (<UserCard key={`user_${i}`} user={user} index={i} />))}
                 <LoadingSkeletons visible={loading} size={users.length === 0 ? 6 : 3}>
-                    <UserCard user={undefined} />
+                    <UserCard user={undefined} index={0} />
                 </LoadingSkeletons>
             </Box>
             {users.length > 0 && <Box flex={1} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"} mt={3.9} px={mdDown ? undefined : 4.3585}>
