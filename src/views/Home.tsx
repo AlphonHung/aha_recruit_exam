@@ -12,7 +12,7 @@ import { CustomBlockButton } from '../components/CustomButtons';
 
 export function Home() {
     const history = useHistory();
-    const { mdDown } = useLayout();
+    const { mdDown, desktopMode } = useLayout();
     const [keyword, setKeyword] = useState('');
     const [pageSize, setPageSize] = useState(10);
 
@@ -31,11 +31,11 @@ export function Home() {
     }
 
     return (
-        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 0 : 5.4, pb: mdDown ? 2.4 : 8.7 }}>
+        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 0 : 5.4, pb: mdDown ? 2.5 : 8.7, px: desktopMode ? '93px !important' : undefined }}>
             <Stack height={1} spacing={mdDown ? 1.6 : 2}>
                 <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5}>Search</Typography>
                 <CustomInput placeholder={"Keyword"} handleInput={handleKeywordInput} />
-                {!mdDown && <Box sx={{ py: 1 }}>
+                {!mdDown && <Box sx={{ pt: 0.8, pb: 1 }}>
                     <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
                 </Box>}
                 <Typography variant="h5" component="h5" fontSize={'1.2rem'} lineHeight={1.5} pt={mdDown ? 1.2 : 0}># Of Results Per Page</Typography>
@@ -44,7 +44,7 @@ export function Home() {
                     results
                 </Typography>
                 <PageSizeSlider defaultValue={pageSize} handleChange={handlePageSizeChange} />
-                {!mdDown && <Box sx={{ pt: 3, pb: 1 }}>
+                {!mdDown && <Box sx={{ pt: 2.8, pb: 1 }}>
                     <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
                 </Box>}
                 <Box flex={1} minHeight={'66px'} display={'flex'} justifyContent={"flex-start"} alignItems={"flex-end"}>

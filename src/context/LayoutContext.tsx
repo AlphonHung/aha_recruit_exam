@@ -5,6 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 type contextType = {
     mdDown: boolean;
     smDown: boolean;
+    desktopMode: boolean;
 }
 
 const LayoutStateContext = createContext<contextType | undefined>(undefined);
@@ -13,9 +14,10 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
     const theme = useTheme();
     const mdDown = useMediaQuery(theme.breakpoints.down('md'));
     const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+    const desktopMode = useMediaQuery('(min-width:1440px)');
 
     return (
-        <LayoutStateContext.Provider value={{ mdDown, smDown }}>
+        <LayoutStateContext.Provider value={{ mdDown, smDown, desktopMode }}>
             {children}
         </LayoutStateContext.Provider>
     )

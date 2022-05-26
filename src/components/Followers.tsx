@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { useLocation } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Skeleton from '@mui/material/Skeleton';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useLayout } from '../context/LayoutContext';
 import { SearchResult, UserData } from '../domain';
 import { LoadingSkeletons } from '../components/LoadingSkeletons';
 import { FollowButton } from '../components/CustomButtons';
@@ -39,9 +40,14 @@ function TopTabs(props: { value: number; setValue: (newValue: number) => void; }
             '& .MuiButtonBase-root': {
                 color: '#929292',
                 fontSize: '16px',
+                letterSpacing: '0.15px',
                 lineHeight: 1.5,
                 borderBottom: '2px solid #1F1F1F',
-                padding: '32px 16px 12px 16px'
+                padding: '32px 16px 8px 16px',
+                textTransform: 'inherit'
+            },
+            '& .Mui-selected': {
+                fontWeight: 700
             }
         }}>
             <Tab label="Followers" {...a11yProps(0)} />
@@ -78,7 +84,7 @@ function UserRow(props: { user?: UserData; }) {
     const [loadError, setLoadError] = useState(false);
 
     if (props.user === undefined) return (
-        <Stack width={1} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} my={0.8} px={1.6}>
+        <Stack width={1} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} my={1.6} px={1.6}>
             <Stack flexDirection={'row'} alignItems={'center'}>
                 <Skeleton variant="rectangular" width={40} height={40} sx={{ borderRadius: '5px' }} />
                 <Box pl={1.5} height={'45px'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'flex-start'}>
@@ -91,7 +97,7 @@ function UserRow(props: { user?: UserData; }) {
     )
 
     return (
-        <Stack width={1} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} my={0.8} px={1.6}>
+        <Stack width={1} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} my={1.6} px={1.6}>
             <Stack flexDirection={'row'} alignItems={'center'}>
                 <Box width={'40px'} height={'40px'} borderRadius={'5px'} overflow={'hidden'} sx={{ position: 'relative', border: '1px solid white' }}>
                     <Skeleton variant="rectangular" width={'100%'} height={'100%'} style={{ position: 'absolute', left: 0, top: 0, zIndex: -1 }} />
@@ -164,7 +170,7 @@ function FollowersListPanel(props: { type: 'all' | 'friends' }) {
 
     return (
         <div
-            style={{ height: '100%', paddingTop: '23px', paddingBottom: '23px', overflowY: 'scroll' }}
+            style={{ height: '100%', paddingTop: '15px', paddingBottom: '16px', overflowY: 'scroll' }}
             onScroll={(e) => {
                 if (loading) return;
                 const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -180,12 +186,14 @@ function FollowersListPanel(props: { type: 'all' | 'friends' }) {
     )
 }
 
+const EXCLUDE_DISPLAY_ROUTES = ['/tags'];
 /** Followers on right of screen, only display when screen width is larger than 1440px. */
 export function Followers() {
+    const location = useLocation();
+    const { desktopMode } = useLayout();
     const [value, setValue] = useState(0);
-    const matches = useMediaQuery('(min-width:1440px)');
 
-    if (!matches) return null;
+    if (!desktopMode || EXCLUDE_DISPLAY_ROUTES.includes(location.pathname)) return null;
     return (
         <Stack width={'375px'} height={1} sx={{ backgroundColor: '#1B1B1B' }}>
             <TopTabs value={value} setValue={setValue} />

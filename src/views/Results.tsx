@@ -40,8 +40,8 @@ function AspectRatioBox(props: { width: number | string; ratio: number; children
 function UserCard(props: { user?: UserData; index: number; }) {
     const { smDown } = useLayout();
     const [loadError, setLoadError] = useState(false);
-    const width = useMemo(() => smDown ? '100%' : 'calc((100% - 68px)/3)', [smDown]);
-    const maxWidth = useMemo(() => smDown ? undefined : '216px', [smDown]);
+    const width = useMemo(() => smDown ? '100%' : 'calc((100% - 59px)/3)', [smDown]);
+    const maxWidth = useMemo(() => smDown ? undefined : '219px', [smDown]);
 
     if (props.user === undefined) return (
         <Box width={width} maxWidth={maxWidth}>
@@ -64,7 +64,7 @@ function UserCard(props: { user?: UserData; index: number; }) {
                     onError={() => { setLoadError(true); }}
                 />
             </AspectRatioBox>
-            <Typography variant="body1" fontSize={'14.9px'} lineHeight={1.5} mt={1.2} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>{props.user.name}</Typography>
+            <Typography variant="body1" fontSize={'14.9px'} lineHeight={1.5} mt={smDown ? 2.033 : 1.2} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>{props.user.name}</Typography>
             <Typography variant="body1" fontSize={'11.175px'} lineHeight={1.5} sx={{ color: '#B2B2B2' }}>{`by ${props.user.username}`}</Typography>
         </Box>
     )
@@ -80,7 +80,7 @@ function NoResultHint(props: { visible: boolean; }) {
 
 /** Search results page */
 export function Results() {
-    const { mdDown } = useLayout();
+    const { mdDown, smDown, desktopMode } = useLayout();
     const { search } = useLocation();
     const urlParams = new URLSearchParams(search);
     const keyword = urlParams.get('keyword') || '';
@@ -119,9 +119,9 @@ export function Results() {
     }, [page, repeat])
 
     return (
-        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 2 : 9.2, pb: mdDown ? 2.4 : 8.7 }}>
+        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 2 : 9.2, pb: mdDown ? 2.4 : 8.7, pl: desktopMode ? '48px !important' : undefined }}>
             <ResultsPageTitle />
-            <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} mt={2.4} px={mdDown ? undefined : 4.3585} rowGap={3.1} columnGap={3.6}>
+            <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} mt={2.4} px={mdDown ? undefined : 4.3585} rowGap={smDown ? 3.8 : 3.1} columnGap={3.6}>
                 <NoResultHint visible={!loading && users.length === 0} />
                 {users.map((user, i) => (<UserCard key={`user_${i}`} user={user} index={i} />))}
                 <LoadingSkeletons visible={loading} size={pageSize > 10 ? 10 : pageSize}>
