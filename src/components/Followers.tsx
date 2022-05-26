@@ -93,11 +93,11 @@ function UserRow(props: { user?: UserData; }) {
     return (
         <Stack width={1} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} my={0.8} px={1.6}>
             <Stack flexDirection={'row'} alignItems={'center'}>
-                <Box width={'40px'} height={'40px'} borderRadius={'5px'} overflow={'hidden'} sx={{ border: '1px solid white' }}>
+                <Box width={'40px'} height={'40px'} borderRadius={'5px'} overflow={'hidden'} sx={{ position: 'relative', border: '1px solid white' }}>
+                    <Skeleton variant="rectangular" width={'100%'} height={'100%'} style={{ position: 'absolute', left: 0, top: 0, zIndex: -1 }} />
                     <img
                         src={loadError ? IMG_SOURCE.AVATAR_DEFAULT : props.user.avater}
                         alt={props.user.name}
-                        loading="lazy"
                         style={{ width: '100%', height: '100%' }}
                         onError={() => { setLoadError(true); }}
                     />

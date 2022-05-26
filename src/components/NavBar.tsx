@@ -17,10 +17,10 @@ const PageIcon = createSvgIcon(
 );
 
 /** A link item component inside NavBar. */
-function NavBarItem(props: { label: string; link: string; hideBadge?: boolean }) {
+function NavBarItem(props: { label: string; link: string; matchLinks?: string[]; hideBadge?: boolean }) {
     const location = useLocation();
     const { mdDown } = useLayout();
-    const active = useMemo(() => location.pathname === props.link, [location])
+    const active = useMemo(() => location.pathname === props.link || props.matchLinks?.includes(location.pathname), [location])
     return (
         <Link to={props.link} style={{ textDecoration: 'none' }}>
             <Stack alignItems={'center'}>
@@ -69,7 +69,7 @@ function TopNavBar() {
             sx={{ background: mdDown ? '#181818' : '#1B1B1B' }}>
             {showBackButton ? <MobileBackButton /> : <Logo />}
             {!mdDown && <Stack spacing={2} mt={4}>
-                <NavBarItem label={'Home'} link={'/'} hideBadge={true} />
+                <NavBarItem label={'Home'} link={'/'} matchLinks={['/results']} hideBadge={true} />
                 <NavBarItem label={'Tags'} link={'/tags'} />
             </Stack>}
         </Box>
@@ -96,7 +96,7 @@ function BottomTabBar() {
                 backdropFilter: 'blur(54.3656px)'
             }}>
             <Stack direction={'row'} spacing={5}>
-                <NavBarItem label={'Home'} link={'/'} hideBadge={true} />
+                <NavBarItem label={'Home'} link={'/'} matchLinks={['/results']} hideBadge={true} />
                 <NavBarItem label={'Tags'} link={'/tags'} />
             </Stack>
         </Box>

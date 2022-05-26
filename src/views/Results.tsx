@@ -56,10 +56,10 @@ function UserCard(props: { user?: UserData; index: number; }) {
     return (
         <Box width={width} maxWidth={maxWidth}>
             <AspectRatioBox width={'100%'} ratio={219 / 146}>
+                <Skeleton variant="rectangular" width={'100%'} height={'100%'} style={{ position: 'absolute', left: 0, top: 0, zIndex: -1 }} />
                 <img
                     src={loadError ? IMG_SOURCE.RESULT_DEFAULT[props.index % 3] : props.user.avater}
                     alt={props.user.name}
-                    loading="lazy"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     onError={() => { setLoadError(true); }}
                 />
@@ -124,7 +124,7 @@ export function Results() {
             <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} mt={2.4} px={mdDown ? undefined : 4.3585} rowGap={3.1} columnGap={3.6}>
                 <NoResultHint visible={!loading && users.length === 0} />
                 {users.map((user, i) => (<UserCard key={`user_${i}`} user={user} index={i} />))}
-                <LoadingSkeletons visible={loading} size={users.length === 0 ? 6 : 3}>
+                <LoadingSkeletons visible={loading} size={pageSize > 10 ? 10 : pageSize}>
                     <UserCard user={undefined} index={0} />
                 </LoadingSkeletons>
             </Box>
