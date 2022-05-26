@@ -15,7 +15,7 @@ interface TagData {
 /** Display a tag in the form of card. */
 function TagCard(props: { tag?: TagData; }) {
     const { smDown } = useLayout();
-    const width = useMemo(() => smDown ? 'calc((100% - 24px)/2)' : '150px', [smDown])
+    const width = useMemo(() => smDown ? 'calc((100% - 32px)/2)' : '150px', [smDown])
 
     if (props.tag === undefined) return (
         <Box width={width}>
@@ -42,7 +42,7 @@ function TagCard(props: { tag?: TagData; }) {
 export function Tags() {
     const [tags, setTags] = useState<TagData[]>([]);
     const [loading, setLoading] = useState(false);
-    const { mdDown } = useLayout();
+    const { mdDown, smDown } = useLayout();
 
     useEffect(() => {
         setLoading(true);
@@ -54,9 +54,9 @@ export function Tags() {
     }, [])
 
     return (
-        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 2 : 5.4, pb: mdDown ? 2.4 : 8.7 }}>
+        <Container maxWidth={'md'} sx={{ height: '100%', overflowY: 'scroll', pt: mdDown ? 2 : 8, pb: mdDown ? 2.4 : 8 }}>
             <Typography variant="h4" component="h4" fontSize={mdDown ? '1.2rem' : '1.5rem'} lineHeight={1.5} mb={2.4}>Tags</Typography>
-            <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} rowGap={3.6} columnGap={2.4}>
+            <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} flexWrap={'wrap'} pl={smDown ? 0.4 : undefined} rowGap={smDown ? 2.3 : 3.6} columnGap={2.4}>
                 {tags.map((tag, i) => (<TagCard key={`tag_${i}`} tag={tag} />))}
                 <LoadingSkeletons visible={loading} size={10}>
                     <TagCard tag={undefined} />

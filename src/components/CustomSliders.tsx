@@ -26,6 +26,7 @@ export function PageSizeSlider(props: { defaultValue: number; handleChange: (eve
             sx={{
                 color: '#FFD05D',
                 height: 8,
+                marginTop: '11px !important',
                 '& .MuiSlider-rail': {
                     backgroundColor: 'white',
                     opacity: 0.3
@@ -50,11 +51,12 @@ export function PageSizeSlider(props: { defaultValue: number; handleChange: (eve
                     display: 'none',
                 },
                 '& .MuiSlider-markLabel': {
-                    fontSize: '0.8rem',
+                    fontSize: '0.7rem',
                     color: 'white',
                     opacity: 0.5,
                     lineHeight: 1.5,
-                    marginTop: '5px'
+                    marginTop: '2px',
+                    letterSpacing: '0.25px'
                 },
                 '& .MuiSlider-markLabelActive': {
                     opacity: 1

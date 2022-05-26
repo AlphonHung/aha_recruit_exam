@@ -38,9 +38,15 @@ export function FollowButton(props: { isFollowing: boolean; handleClick?: () => 
             variant="outlined"
             onClick={props.handleClick}
             sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minWidth: '60px',
+                width: props.isFollowing ? '76px' : '60px', // I know its not good to define w/h, just for fit the Figma design.
+                height: props.isFollowing ? '28px' : '29px',
                 fontSize: 1,
+                fontWeight: 600,
                 lineHeight: 1,
-                padding: '8px 10px',
                 borderRadius: '20px',
                 textTransform: 'initial',
                 backgroundColor: props.isFollowing ? 'white' : undefined,

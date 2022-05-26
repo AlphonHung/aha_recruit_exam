@@ -37,14 +37,13 @@ function NavBarItem(props: { label: string; link: string; matchLinks?: string[];
 function MobileBackButton() {
     return (
         <BackButton>
-            <Typography variant="h5" component="h5" fontWeight={700} fontSize={'1.2rem'} lineHeight={1.5} pl={1.951} sx={{ color: 'white' }}>{'Home Page'}</Typography>
+            <Typography variant="h5" component="h5" fontWeight={700} fontSize={'1.2rem'} lineHeight={1.5} pl={1.351} sx={{ color: 'white' }}>{'Home Page'}</Typography>
         </BackButton>
     )
 }
 
 /** NavBar that displays in top or left of screen. */
 function TopNavBar() {
-    const theme = useTheme();
     const { mdDown, smDown } = useLayout();
     const location = useLocation();
     const showBackButton = useMemo(() => mdDown && location.pathname !== '/', [mdDown, location])
@@ -59,7 +58,7 @@ function TopNavBar() {
         <Box
             component={'nav'}
             width={mdDown ? undefined : '80px'}
-            height={mdDown ? '66px' : undefined}
+            height={mdDown ? '70px' : undefined}
             px={px}
             py={mdDown ? undefined : 3.7}
             display={'flex'}
